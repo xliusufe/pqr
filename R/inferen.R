@@ -82,7 +82,6 @@ my.est = function(y,x,z,tau,method,pen,eps,sim.level)
 inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=100)
 {
   result=my.est(y,x,z,tau,method,pen,eps,sim.level=sim.level)
-  Cov=NULL
   if(RCV){
     d=dim(x)[2]
     q=dim(z)[2]
@@ -110,6 +109,14 @@ inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.
       Cov=Cov+(Cov0+Cov1)/2
     }
     Cov=Cov/K
+  }
+  else{
+    result0 = ini.est(cbind(x,1,z),y,index=c(1:(d+1)),tau,level=sim.level)
+    ind0=abs(result0$coef[-c(1:(d+1))])>eps
+    z1=z[,ind0]
+    result1=rq.fit(x=cbind(x,1,z1),y=y,tau=tau)
+    betas=boot.wild(x=x,z=z,result=result1,tau=tau,weights=weights,B=B,sim.level=sim.level,method=method,eps=eps)
+    Cov=cov(t(betas))
   }
   return(list(est=result,cov=Cov))
 }

@@ -31,12 +31,12 @@
 	x <- matrix(rnorm(n*d),n,d)
 	z <- matrix(rnorm(n*(p-1)),n,p-1)
 	y <- x%*%beta + cbind(1,z)%*%eta + rnorm(n)
-	fit <- inferen(y,x,z,tau=tau,B=500)
+	fit <- inferen(y,x,z,tau=0.5)
 	ests <- fit$est
-    est.coef <- cbind(est.coef,ests$coef)
+    est.coef <- ests$coef
 	boot.var <- diag(fit$cov)
-    lbounds <- ests$coef-qnorm((1+alpha)/2)*sqrt(boot.var)
-    ubounds <- ests$coef+qnorm((1+alpha)/2)*sqrt(boot.var)
+    lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
+    ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
     counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
     coverage <- cbind(coverage,counts)
  
