@@ -1,19 +1,19 @@
 
-score=function(tau,x)
-{
+score=function(tau,x){
   tau-ifelse(x<0,1,0)
 }
 
-resamples=function(w,resids,fit)
-{
+resamples=function(w,resids,fit){
    return(fit+w*abs(resids))
 }
+
 boot.wild=function(x,z,y=NULL, result=NULL,tau=0.5,weights=NULL,B=1000,sim.level,method,eps)
 {
     n = nrow(x)
-    if(tau>=1|tau<=0){stop('tau is out of range!');}else{
-      if(is.null(weights))
-      {
+    if(tau>=1|tau<=0)
+      stop('tau is out of range!')
+    else{
+      if(is.null(weights)){
        boot.n=B;
        w.boot=matrix(sample(c(-2*tau,2*(1-tau)),size=n*boot.n,prob=c(tau,1-tau),replace=T),n,boot.n)
       }else{
@@ -21,9 +21,8 @@ boot.wild=function(x,z,y=NULL, result=NULL,tau=0.5,weights=NULL,B=1000,sim.level
        w.boot=weights
       }
       if(is.null(result)&is.null(y))
-      {
         stop("No responses or residuals!")
-      }else if(is.null(result)){result=rq.fit(x,y,tau=tau)}
+      else if(is.null(result)){result=rq.fit(x,y,tau=tau)}
       cc=akj(result$residual,z=0)$dens
       w=diag(x%*%solve(t(x)%*%x)%*%t(x))
       residuals.b=result$residual

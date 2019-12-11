@@ -1,4 +1,5 @@
-importFrom("glmnet","cv.glmnet","rq.fit", "rq.fit.lasso", "grpreg")
-importFrom("stats", "coef", "sd")
+importFrom("glmnet","cv.glmnet", "coef")
+importFrom("quantreg", "rq", "rq.fit", "rq.fit.lasso")
+importFrom("grpreg", "grpreg")
 export(inferen)
 useDynLib(CIhd1)

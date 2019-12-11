@@ -59,7 +59,8 @@ my.est = function(y,x,z,tau,method,pen,eps,sim.level)
   
   if(method=='Iterative'){
     itnum=iter.num
-    m1=dim(x)[2];m2=dim(z)[2]
+    m1=dim(x)[2]
+    m2=dim(z)[2]
     beta1=result1$coef[1:m1];beta2=beta1-1
     y.tilde=y-cbind(1,z)%*%result1$coef[(m1+1):(m1+m2)]
     x.tilde=x-cbind(1,z)%*%t(H)
