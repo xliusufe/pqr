@@ -8,7 +8,8 @@ Provide CI of individual coefficient of high-dimensional quantile regression.
 This function provides the confidence intevals of individual coefficient of high-dimensional quantile regression by a regularized projection score method for estimating treatment effects. One-step estimation procedure can speed up computation, and the Bootstrap method can narrow the length of CI. 
 }
 \usage{
-inferen(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=100)
+inferen(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,
+        level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=100)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

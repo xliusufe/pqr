@@ -7,7 +7,7 @@ resamples=function(w,resids,fit){
    return(fit+w*abs(resids))
 }
 
-boot.wild=function(x,z,y=NULL, result=NULL,tau=0.5,weights=NULL,B=1000,sim.level,method,eps)
+boot.wild=function(x,z,y=NULL, result=NULL,tau=0.5,pen,weights=NULL,B=1000,sim.level,method,eps)
 {
     n = nrow(x)
     if(tau>=1|tau<=0)
@@ -27,7 +27,7 @@ boot.wild=function(x,z,y=NULL, result=NULL,tau=0.5,weights=NULL,B=1000,sim.level
       w=diag(x%*%solve(t(x)%*%x)%*%t(x))
       residuals.b=result$residual
       y.boot=apply(w.boot,2,resamples,resids=residuals.b,fit=result$fitted)
-      temp=apply(y.boot,2,my.est,x=x,z=z,tau=tau,sim.level=sim.level,method=method,eps=eps)
+      temp=apply(y.boot,2,my.est,x=x,z=z,tau=tau,pen=pen,sim.level=sim.level,method=method,eps=eps)
       coeffs=sapply(temp,coef)
       return(coeffs)
     }

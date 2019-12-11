@@ -97,14 +97,14 @@ inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.
       z1.0=z1[,ind0];
       
       result1=rq.fit(x=cbind(x1,1,z1.0),y=y1,tau=tau)
-      betas=boot.wild(x=x1,z=z1,result=result1,tau=tau,weights=weights,B=B,sim.level=sim.level/sqrt(2),method,eps)
+      betas=boot.wild(x=x1,z=z1,result=result1,tau=tau,pen=pen,weights=weights,B=B,sim.level=sim.level/sqrt(2),method,eps)
       Cov0=cov(t(betas))
       result1 = ini.est(cbind(x1,1,z1),y1,index=c(1:(d+1)),tau,level=sim.level/sqrt(2))
       ind1=abs(result1$coef[-c(1:(d+1))])>eps
       z0.1=z0[,ind1];
       
       result0=rq.fit(x=cbind(x0,1,z0.1),y=y0,tau=tau)
-      betas=boot.wild(x=x0,z=z0,result=result0,tau=tau,weights=weights,B=B,sim.level=sim.level/sqrt(2),method=method,eps=eps)
+      betas=boot.wild(x=x0,z=z0,result=result0,tau=tau,pen=pen,weights=weights,B=B,sim.level=sim.level/sqrt(2),method=method,eps=eps)
       Cov1=cov(t(betas))
       Cov=Cov+(Cov0+Cov1)/2
     }
@@ -115,7 +115,7 @@ inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.
     ind0=abs(result0$coef[-c(1:(d+1))])>eps
     z1=z[,ind0]
     result1=rq.fit(x=cbind(x,1,z1),y=y,tau=tau)
-    betas=boot.wild(x=x,z=z,result=result1,tau=tau,weights=weights,B=B,sim.level=sim.level,method=method,eps=eps)
+    betas=boot.wild(x=x,z=z,result=result1,tau=tau,pen=pen,weights=weights,B=B,sim.level=sim.level,method=method,eps=eps)
     Cov=cov(t(betas))
   }
   return(list(est=result,cov=Cov))
