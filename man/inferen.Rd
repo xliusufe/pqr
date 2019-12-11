@@ -28,7 +28,8 @@ The given quantile, a scale in the unit inteval
 The method including "OneStep", "Iterative". "OneStep" denotes one-step method ( Feng et al. 2019); "Iterative" denotes that the iteration stops when algorithm conveges. Default  is "OneStep".
   }
   \item{pen}{
-The penalty including "glasso" and "lasso". "glasso" denotes the grouped lasso that is used in the regression of treatment effect on confounders; "lasso" denotes the lasso.
+The penalty including "glasso" and "lasso". "glasso" denotes the grouped lasso that is used in the regression of 
+treatment effect on confounders; "lasso" denotes the lasso. Default is "glasso".
 }
   \item{eps}{
 The perturbation when the proposed algorithm is used. Default is epsilon=1e-6.
