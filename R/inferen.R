@@ -45,6 +45,7 @@ eff.est = function(z,x,family='gaussian',nlam=100,crit="BIC"){
     coe=coef(cvfit,s="lambda.min")
     H_hat = cbind(H_hat,coe)
   }
+  H_hat = as.matrix(H_hat)
   return(t(H_hat))
 }
 
