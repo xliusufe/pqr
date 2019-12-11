@@ -5,7 +5,7 @@ Version: 1.0.1
 Date: 2019-12-12
 Authors@R: c(person(given = "Xingdong", family = "Feng", role = "aut"),
              person(given = "Jian", family = "Huang", role = c("aut")),
-             person(given = "Xu", family = "Liu", role = "aut","cre"),
+             person(given = "Xu", family = "Liu", role = "aut","cre")
 Author: Xingdong Feng [aut],
         Jian Huang [aut],
         Xu Liu [aut,cre]
