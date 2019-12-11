@@ -26,6 +26,7 @@
 	d <- 3
 	s <- 3
 	p <- 20
+	alpha <- 0.95
 	beta <- rep(3,d)
 	eta <- c(rep(3,s),numeric(p-s))
 	x <- matrix(rnorm(n*d),n,d)
@@ -38,7 +39,6 @@
     lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
     ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
     counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
-    coverage <- cbind(coverage,counts)
  
  # References
  
