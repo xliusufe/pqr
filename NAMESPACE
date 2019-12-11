@@ -1,0 +1,4 @@
+importFrom("glmnet","cv.glmnet","rq.fit", "rq.fit.lasso", "grpreg")
+importFrom("stats", "coef", "sd")
+export(inferen)
+useDynLib(CIhd1)
