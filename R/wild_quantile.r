@@ -22,8 +22,8 @@ boot.wild=function(x,z,y=NULL, result=NULL,tau=0.5,weights=NULL,B=1000,sim.level
       }
       if(is.null(result)&is.null(y))
         stop("No responses or residuals!")
-      else if(is.null(result))result=rq.fit(x,y,tau=tau)
-      cc=akj(result$residual,z=0)$dens
+      else if(is.null(result))
+        result=rq.fit(x,y,tau=tau)
       w=diag(x%*%solve(t(x)%*%x)%*%t(x))
       residuals.b=result$residual
       y.boot=apply(w.boot,2,resamples,resids=residuals.b,fit=result$fitted)
