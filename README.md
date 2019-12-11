@@ -1,4 +1,5 @@
 # CIhdq
+  Regularized projection score estimation of treatment effects in high-dimensional quantile regression.
  
   A regularized projection score method is proposed for estimating treatment effects in quantile regression 
   in the presence of high-dimensional confounding covariates. This method is based on an estimated projection 
