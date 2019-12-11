@@ -79,7 +79,7 @@ my.est = function(y,x,z,tau,method,pen,eps,sim.level)
   }
   return(result2)
 }
-inferen = function(y,x,z,tau,method="OneStep",pen,eps=1e-6,sim.level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=100)
+inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=100)
 {
   result=my.est(y,x,z,tau,method,pen,eps,sim.level=sim.level)
   Cov=NULL

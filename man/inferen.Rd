@@ -72,10 +72,13 @@ Feng Xingdong, Huang, Jian and Xu Liu (liu.xu@sufe.edu.cn)
 \examples{
 n <- 50
 d <- 3
+s <- 3
 p <- 20
+beta <- rep(3,d)
+eta <- c(rep(3,s),numeric(p-s))
 x <- matrix(rnorm(n*d),n,d)
 z <- matrix(rnorm(n*(p-1)),n,p-1)
-y=x%*%beta+cbind(1,z)%*%eta+error*rnorm(n)
+y <- x%*%beta + cbind(1,z)%*%eta + rnorm(n)
 fit <- inferen(y,x,z,tau=tau,B=500)
 ests <- fit$result
 est.coef <- cbind(est.coef,ests$coef)
