@@ -1,4 +1,4 @@
-# tensorMam
+# CIhdq
  Regularized projection score estimation of treatment effects in high-dimensional quantile regression.
  
   A regularized projection score method is proposed for estimating treatment effects in quantile regression 
@@ -17,7 +17,7 @@
 
 # Usage
 
-   - [x] [CIhdq-manual](https://github.com/xliusufe/tensorMam/blob/master/inst/CIhdq-manual.pdf) ------------ Details of the usage of the package.
+   - [x] [CIhdq-manual](https://github.com/xliusufe/CIhdq/blob/master/inst/CIhdq-manual.pdf) ------------ Details of the usage of the package.
 
 # Example
 

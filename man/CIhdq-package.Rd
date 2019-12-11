@@ -3,17 +3,21 @@
 \alias{CIhdq}
 \docType{package}
 \title{
-\packageTitle{CIhdq}
+Regularized projection score estimation of treatment effects in high-dimensional quantile regression
 }
 \description{
-\packageDescription{CIhdq}
+A regularized projection score method is proposed for estimating treatment effects in quantile regression 
+in the presence of high-dimensional confounding covariates. This method is based on an estimated projection 
+score function of the low-dimensional treatment parameters in the presence of high-dimensional confounding covariates. 
+We propose one-step algorithm and a reffitted wild bootstrapping approach for variance estimation. 
+This enables us to construct confidence intervals for the treatment effects in the high-dimensional circumstances.
 }
 \details{
 \tabular{ll}{
 Package: \tab CIhdq\cr
 Type: \tab Package\cr
 Version: \tab 1.0.1\cr
-Date: \tab 2019-03-13\cr
+Date: \tab 2019-12-12\cr
 License: \tab GPL-2\cr
 }
 }
