@@ -1,5 +1,6 @@
-# CIhdq
-  Regularized projection score estimation of treatment effects in high-dimensional quantile regression.
+# pqr
+  An R package to construct confidence intervals of coefficients via regularized projection score estimation of treatment effects 
+  in high-dimensional quantile regression.
  
   A regularized projection score method is proposed for estimating treatment effects in quantile regression 
   in the presence of high-dimensional confounding covariates. This method is based on an estimated projection 
@@ -12,15 +13,15 @@
     #install Rtools 3.5 (http://cran.r-project.org/bin/windows/Rtools)
     #install.packages("devtools")
     library(devtools)
-    install_github("xliusufe/CIhdq")
+    install_github("xliusufe/pqr")
 
 # Usage
 
-   - [x] [CIhdq-manual](https://github.com/xliusufe/CIhdq/blob/master/inst/CIhdq-manual.pdf) ------------ Details of the usage of the package.
+   - [x] [pqr-manual](https://github.com/xliusufe/pqr/blob/master/inst/pqr-manual.pdf) ------------ Details of the usage of the package.
 
 # Example
 
-    library(CIhdq)
+    library(pqr)
 
     n <- 50
 	d <- 3

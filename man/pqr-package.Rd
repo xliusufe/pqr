@@ -1,6 +1,6 @@
-\name{CIhdq-package}
-\alias{CIhdq-package}
-\alias{CIhdq}
+\name{pqr-package}
+\alias{pqr-package}
+\alias{pqr}
 \docType{package}
 \title{
 Regularized projection score estimation of treatment effects in high-dimensional quantile regression
@@ -14,7 +14,7 @@ This enables us to construct confidence intervals for the treatment effects in t
 }
 \details{
 \tabular{ll}{
-Package: \tab CIhdq\cr
+Package: \tab pqr\cr
 Type: \tab Package\cr
 Version: \tab 1.0.1\cr
 Date: \tab 2019-12-12\cr

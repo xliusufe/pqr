@@ -1,4 +1,4 @@
-Package: CIhdq
+Package: pqr
 Type: Package
 Title: Regularized projection score estimation of treatment effects in high-dimensional quantile regression
 Version: 1.0.1
@@ -17,6 +17,6 @@ License: GPL-2
 LazyData: true
 NeedsCompilation: yes
 Repository: GitHub
-URL: https://github.com/xliusufe/CIhdq
+URL: https://github.com/xliusufe/pqr
 Encoding: UTF-8
 Packaged: 2019-12-11 11:52:18 UTC
