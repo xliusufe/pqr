@@ -64,14 +64,17 @@ The size for bootstrap. Default is 1000.
 }
 
 \references{
-Feng, X., Huang, J. and Liu, X. (2019). Regularized projection score estimation of treatment effects in high-dimensional quantile regression. Manuscript.
+Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects in high-dimensional quantile regression. Manuscript.
 }
 \author{
-Feng Xingdong, Huang, Jian and Xu Liu (liu.xu@sufe.edu.cn)
+Feng Xingdong, Huang, Jian and Liu Xu (liu.xu@sufe.edu.cn)
 }
 
 
 \examples{
+library(pqr)
+library(SparseM)
+library(quantreg)
 n <- 50
 d <- 3
 s <- 3

@@ -22,6 +22,8 @@
 # Example
 
     library(pqr)
+	library(SparseM)
+	library(quantreg)
 
     n <- 50
 	d <- 3
@@ -43,7 +45,7 @@
  
  # References
  
-Feng, X., Huang, J. and Liu, X. (2019). Regularized projection score estimation of treatment effects 
+Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects 
 in high-dimensional quantile regression. Manuscript.
 
 # Development

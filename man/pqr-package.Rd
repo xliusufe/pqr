@@ -22,7 +22,7 @@ License: \tab GPL-2\cr
 }
 }
 \references{
-Feng, X., Huang, J. and Liu, X. (2019). Regularized projection score estimation of treatment effects in high-dimensional quantile regression. Manuscript.
+Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects in high-dimensional quantile regression. Manuscript.
 }
 
 \keyword{ package }
