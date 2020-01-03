@@ -39,7 +39,7 @@ The perturbation when the proposed algorithm is used. Default is epsilon=1e-6.
 The length of tuning parameter \eqn{\alpha} which is selected automatically. Default is 50.
 }
   \item{iter.num}{
-The number of folds for the tuning selection by CV. Default is 5.
+The number of iteration if method="Iterative" is used. Default is 100.
 }
   \item{RCV}{
 Use refitted cross validation method and wild bootstrap to estimate the asymptotic covariance matrix. Default is False.

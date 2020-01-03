@@ -49,7 +49,7 @@ eff.est = function(z,x,family='gaussian',nlam=100,crit="BIC"){
   return(t(H_hat))
 }
 
-my.est = function(y,x,z,tau,method,pen,eps,sim.level)
+my.est = function(y,x,z,tau,method,iter.num,pen,eps,sim.level)
 {
   d = ncol(x)
   result1 = ini.est(cbind(x,1,z),y,index=c(1:(d+1)),tau,level=sim.level)
@@ -80,9 +80,9 @@ my.est = function(y,x,z,tau,method,pen,eps,sim.level)
   }
   return(result2)
 }
-inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=100)
+inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.85,iter.num=10,RCV=F,K=1,weights=NULL,B=1000)
 {
-  result=my.est(y,x,z,tau,method,pen,eps,sim.level=sim.level)
+  result=my.est(y,x,z,tau,method,iter.num,pen,eps,sim.level=sim.level)
   if(RCV){
     d=dim(x)[2]
     q=dim(z)[2]
