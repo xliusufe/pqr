@@ -82,7 +82,7 @@ my.est = function(y,x,z,tau,method,iter.num,pen,eps,sim.level)
 }
 inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.85,iter.num=10,RCV=F,K=1,weights=NULL,B=1000)
 {
-  result=my.est(y,x,z,tau,method,iter.num,pen,eps,sim.level=sim.level)
+  ests=my.est(y,x,z,tau,method,iter.num,pen,eps,sim.level=sim.level)
   if(RCV){
     d=dim(x)[2]
     q=dim(z)[2]
@@ -119,6 +119,6 @@ inferen = function(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,sim.level=0.
     betas=boot.wild(x=x,z=z,result=result1,tau=tau,pen=pen,weights=weights,B=B,sim.level=sim.level,method=method,eps=eps)
     Cov=cov(t(betas))
   }
-  return(list(est=result,cov=Cov))
+  return(list(ests=ests,covs=Cov))
 }
 

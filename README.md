@@ -36,7 +36,7 @@
 	z <- matrix(rnorm(n*(p-1)),n,p-1)
 	y <- x%*%beta + cbind(1,z)%*%eta + rnorm(n)
 	fit <- inferen(y,x,z,tau=0.5)
-	ests <- fit$est
+	ests <- fit$ests
     est.coef <- ests$coef
 	boot.var <- diag(fit$cov)
     lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)

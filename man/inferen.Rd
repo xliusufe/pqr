@@ -9,7 +9,7 @@ This function provides the confidence intevals of individual coefficient of high
 }
 \usage{
 inferen(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,
-        level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=100)
+        level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=1000)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -58,9 +58,9 @@ The size for bootstrap. Default is 1000.
 \value{
 %%  ~Describe the value returned
 %%  If it is a LIST, use
-  \item{est}{Estimator of \eqn{\beta}. It is a list.}
+  \item{ests}{Estimator of \eqn{\beta}. It is a list.}
   
-  \item{cov}{Covariance matrix of \eqn{\beta}. It is a \eqn{d\times d}-matrix.}
+  \item{covs}{Covariance matrix of \eqn{\beta}. It is a \eqn{d\times d}-matrix.}
 }
 
 \references{
@@ -86,7 +86,7 @@ x <- matrix(rnorm(n*d),n,d)
 z <- matrix(rnorm(n*(p-1)),n,p-1)
 y <- x\%*\%beta + cbind(1,z)\%*\%eta + rnorm(n)
 fit <- inferen(y,x,z,tau=0.5)
-ests <- fit$result
+ests <- fit$ests
 est.coef <- ests$coef
 boot.var <- diag(fit$cov)
 lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
