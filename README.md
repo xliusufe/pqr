@@ -45,9 +45,9 @@
  
  # References
  
-Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects 
+Cheng, C., Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects 
 in high-dimensional quantile regression. Manuscript.
 
 # Development
 
-The R-package is developed by Xu Liu (liu.xu@sufe.edu.cn) and Xingdong Feng.
+The R-package is developed by Xu Liu (liu.xu@sufe.edu.cn) and Chao Cheng.
