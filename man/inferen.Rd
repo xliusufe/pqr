@@ -1,15 +1,17 @@
 \name{inferen}
+\alias{inferen-function}
 \alias{inferen}
+\docType{package}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Provide CI of individual coefficient of high-dimensional quantile regression.
+Provide CI of individual coefficient of high-dimensional quantile regression
 }
 \description{
 This function provides the confidence intevals of individual coefficient of high-dimensional quantile regression by a regularized projection score method for estimating treatment effects. One-step estimation procedure can speed up computation, and the Bootstrap method can narrow the length of CI. 
 }
 \usage{
 inferen(y,x,z,tau,method="OneStep",pen="glasso",eps=1e-6,
-        level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=1000)
+        sim.level=0.85,iter.num=100,RCV=F,K=1,weights=NULL,B=1000)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -35,7 +37,7 @@ treatment effect on confounders; "lasso" denotes the lasso. Default is "glasso".
   \item{eps}{
 The perturbation when the proposed algorithm is used. Default is epsilon=1e-6.
 }
-  \item{level}{
+  \item{sim.level}{
 The length of tuning parameter \eqn{\alpha} which is selected automatically. Default is 50.
 }
   \item{iter.num}{

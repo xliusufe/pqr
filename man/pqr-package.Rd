@@ -12,18 +12,14 @@ score function of the low-dimensional treatment parameters in the presence of hi
 We propose one-step algorithm and a reffitted wild bootstrapping approach for variance estimation. 
 This enables us to construct confidence intervals for the treatment effects in the high-dimensional circumstances.
 }
-\details{
-\tabular{ll}{
-Package: \tab pqr\cr
-Type: \tab Package\cr
-Version: \tab 1.0.1\cr
-Date: \tab 2019-12-12\cr
-License: \tab GPL-2\cr
-}
+\author{
+Xu Liu
+
+Maintainer: Xu Liu <liu.xu@sufe.edu.cn>
 }
 \references{
 Cheng, C., Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects in high-dimensional quantile regression. Manuscript.
 }
 
-\keyword{ package }
+\keyword{ Efficiency score; High dimension; Quantile regression; Wild bootstrap }
 

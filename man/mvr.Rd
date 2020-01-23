@@ -1,15 +1,18 @@
 \name{mvr}
+\alias{mqr-function}
 \alias{mvr}
+\docType{package}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Provide CI of individual coefficient of high-dimensional quantile regression.
+Provide CI of individual coefficient of high-dimensional quantile regression
 }
 \description{
-This function provides the coefficient matrix estimator of high-dimensional multivariate regression (MVR)
+This function provides the coefficient matrix estimator of high-dimensional multivariate regression (MVR) with penalty \code{lasso} (\code{mcp} or \code{scad}). The tuning parameter is selected by \code{BIC} (the default), \code{AIC}, \code{EBIC}, \code{CV}, or \code{GCV}.
 }
 \usage{
-mvr(y, x, method="BIC", ncv=10, penalty="LASSO", isPenColumn=TRUE, lambda=NULL, nlam=50,
-    intercept=TRUE, lam_min=1e-4, eps=1e-6, maxstep=20, gamma_pen=2, dfmax=NULL, alpha=1)
+mvr(y, x, method="BIC", ncv=10, penalty="LASSO", isPenColumn=TRUE, 
+          lambda=NULL, nlam=50, intercept=TRUE, lam_min=1e-4, eps=1e-6, 
+          maxstep=20, gamma_pen=2, dfmax=NULL, alpha=1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -22,8 +25,7 @@ mvr(y, x, method="BIC", ncv=10, penalty="LASSO", isPenColumn=TRUE, lambda=NULL, 
     
   \item{ncv}{The number of cross-validation folds.  Default is 10. If \code{method} is not \code{CV}, \code{ncv} is useless.}  
   
-  \item{penalty}{The penalty to be applied to the model. Either "LASSO" (the default),  
-                 "SCAD", or "MCP".}
+  \item{penalty}{The penalty to be applied to the model. Either "LASSO" (the default), "SCAD", or "MCP".}
  
   \item{isPenColumn}{A logical value indicating whether the coefficients associating with \eqn{X_j} that affects whole response 
                     \eqn{y} is penalized.  Default is \code{TRUE}. If \code{isPenColumn} is \code{TRUE}, the coefficients associating with
@@ -115,5 +117,5 @@ Chao Cheng, Xingdong Feng, Jian Huang and Xu Liu (liu.xu@sufe.edu.cn)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.
-\keyword{ Quantile regression }% use one of  RShowDoc("KEYWORDS")
-\keyword{ Projection score }% __ONLY ONE__ keyword per line
+\keyword{ Multivariate regression }% use one of  RShowDoc("KEYWORDS")
+\keyword{ Variable selection }% __ONLY ONE__ keyword per line

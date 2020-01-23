@@ -1,4 +1,3 @@
-importFrom("glmnet","cv.glmnet")
 importFrom("stats", "coef", "sd")
 useDynLib(pqr, .registration=TRUE)
 exportPattern("^[[:alpha:]]+")

@@ -27,34 +27,12 @@ ini.est = function(x,y,index,tau,level=0.85,lam=NULL,sim.n=1000){
   return(list(residual=result$residual,coefficient=result$coefficient))
 }
 
-eff.est.glasso = function(z,x,family='gaussian',nlam=100,crit="BIC"){
-  fit = grpreg(X=z,y=x,penalty="grLasso",family=family,nlambda=nlam)
-  if(crit=="AIC"){
-    tmp=2*fit$loss+2*fit$df
-  }else{tmp=2*fit$loss+log(fit$n)*fit$df}
-  ind=which(tmp==min(tmp))
-  return(fit$beta[,,ind])
-}
-
-eff.est = function(z,x,family='gaussian',nlam=100,crit="BIC"){
-  d = ncol(x)
-  p = ncol(z)
-  H_hat = NULL
-  for(k in 1:d){
-    cvfit <- cv.glmnet(z,x[,k],family="gaussian")
-    coe=coef(cvfit,s="lambda.min")
-    H_hat = cbind(H_hat,coe)
-  }
-  H_hat = as.matrix(H_hat)
-  return(t(H_hat))
-}
-
 my.est = function(y,x,z,tau,method,iter.num,pen,eps,sim.level)
 {
   d = ncol(x)
   result1 = ini.est(cbind(x,1,z),y,index=c(1:(d+1)),tau,level=sim.level)
-  if(pen=="glasso") isPenColumn = 1
-  else isPenColumn = 0
+  if(pen=="glasso") isPenColumn = TRUE
+  else isPenColumn = FALSE
   fit = mvr(x,z,isPenColumn=isPenColumn)
   H = t(fit$Bhat)
   

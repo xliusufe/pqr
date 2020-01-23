@@ -1,5 +1,5 @@
 mvr <- 
-  function(y,x,method="BIC",ncv=10,penalty="LASSO",isPenColumn=1,lambda=NULL,nlam=50,
+  function(y,x,method="BIC",ncv=10,penalty="LASSO",isPenColumn=TRUE,lambda=NULL,nlam=50,
            intercept=TRUE,lam_min=1e-4,eps=1e-6,maxstep=20,gamma_pen=2,dfmax=NULL,alpha=1){
     n <- dim(y)[1]
     q <- dim(y)[2]

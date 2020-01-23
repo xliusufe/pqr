@@ -1,25 +1,24 @@
 Package: pqr
 Type: Package
-Title: Regularized projection score estimation of treatment effects in high-dimensional quantile regression
+Title: pqr
 Version: 1.0.1
-Date: 2019-12-11
 Authors@R: c(person(given = "Chao", family = "Cheng", role = "aut"),
              person(given = "Xingdong", family = "Feng", role = "aut"),
-             person(given = "Jian", family = "Huang", role = c("aut")),
-             person(given = "Xu", family = "Liu", role = "aut","cre"))
+             person(given = "Jian", family = "Huang", role = "aut"),
+             person(given = "Xu", family = "Liu", role = c("aut","cre"), email = "liu.xu@sufe.edu.cn"))
 Author: Chao Cheng [aut],
         Xingdong Feng [aut],
         Jian Huang [aut],
         Xu Liu [aut,cre]
-Maintainer: Xu Liu <liu.xu@shufe.edu> and Chao Cheng
+Maintainer: Xu Liu and Chao Cheng <liu.xu@shufe.edu> 
 Description: A regularized projection score method is proposed for estimating treatment effects in quantile regression in the presence of high-dimensional confounding covariates. This method is based on an estimated projection score function of the low-dimensional treatment parameters in the presence of high-dimensional confounding covariates. We propose one-step algorithm and a reffitted wild bootstrapping approach for variance estimation. This enables us to construct confidence intervals for the treatment effects in the high-dimensional circumstances.
-License: GPL (>= 2)
-Imports: SparseM, quantreg, Rcpp (>= 0.11.15), RcppEigen (>= 0.3.2.3.0)
+License: GPL-2
+Depends: R (>= 3.1.0), SparseM, quantreg
+Imports: Rcpp (>= 0.11.15), RcppEigen (>= 0.3.2.3.0)
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 6.0.1
-LazyData: true
 NeedsCompilation: yes
-Repository: GitHub
+Repository: github
 URL: https://github.com/xliusufe/pqr
 Encoding: UTF-8
-Packaged: 2019-12-11 11:52:18 UTC
+Packaged: 2019-12-11 11:52:18 UTC; admin
