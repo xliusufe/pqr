@@ -75,8 +75,7 @@ Chao Cheng, Xingdong Feng, Jian Huang and Xu Liu (liu.xu@sufe.edu.cn)
 
 \examples{
 library(pqr)
-library(SparseM)
-library(quantreg)
+
 n <- 50
 d <- 3
 s <- 3

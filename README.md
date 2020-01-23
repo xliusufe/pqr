@@ -22,9 +22,7 @@
 # Example
 
     library(pqr)
-	library(SparseM)
-	library(quantreg)
-
+	
     # Example 1
 	
     n <- 50
