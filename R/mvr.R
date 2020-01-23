@@ -3,11 +3,9 @@ mvr <-
            intercept=TRUE,lam_min=1e-4,eps=1e-6,maxstep=20,gamma_pen=2,dfmax=NULL,alpha=1){
     n <- dim(y)[1]
     q <- dim(y)[2]
-    X2 <- produceX2(x)[,-1]
-    #X2 <- X[,-1]
-    X2bar = colMeans(X2)
+    X2bar = colMeans(x)
     Ybar = colMeans(y)
-    X2 = X2 - matrix(rep(X2bar,each=n),n)
+    X2 = x - matrix(rep(X2bar,each=n),n)
     Y = y - matrix(rep(Ybar,each=n),n)
     p <- ncol(X2)
     if (penalty == "LASSO") pen <- 1
