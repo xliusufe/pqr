@@ -14,7 +14,7 @@ Author: Chao Cheng [aut],
 Maintainer: Xu Liu <liu.xu@shufe.edu> and Chao Cheng
 Description: A regularized projection score method is proposed for estimating treatment effects in quantile regression in the presence of high-dimensional confounding covariates. This method is based on an estimated projection score function of the low-dimensional treatment parameters in the presence of high-dimensional confounding covariates. We propose one-step algorithm and a reffitted wild bootstrapping approach for variance estimation. This enables us to construct confidence intervals for the treatment effects in the high-dimensional circumstances.
 License: GPL (>= 2)
-Imports: glmnet, SparseM, quantreg, grpreg, Rcpp (>= 0.11.15), RcppEigen (>= 0.3.2.3.0)
+Imports: SparseM, quantreg, Rcpp (>= 0.11.15), RcppEigen (>= 0.3.2.3.0)
 LinkingTo: Rcpp, RcppEigen
 RoxygenNote: 6.0.1
 LazyData: true

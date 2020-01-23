@@ -1,4 +1,6 @@
 importFrom("glmnet","cv.glmnet")
-importFrom("grpreg", "grpreg")
 importFrom("stats", "coef", "sd")
+useDynLib(pqr, .registration=TRUE)
+exportPattern("^[[:alpha:]]+")
+importFrom(Rcpp, evalCpp)
 export(inferen, mvr)
