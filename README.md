@@ -25,7 +25,7 @@
 	library(SparseM)
 	library(quantreg)
 
-    \# Example 1
+    # Example 1
 	
     n <- 50
 	d <- 3
@@ -45,7 +45,7 @@
     ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
     counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
 	
-	\# Example 2
+	# Example 2
 	
     n <- 100
 	q <- 5
@@ -53,7 +53,7 @@
 	p <- 100
 	B <- matrix(runif(q*s, 2,3), s)
 	x <- matrix(rnorm(n*p),n,p)
-	y <- x[,1:s]\%*\%B + rnorm(n)
+	y <- x[,1:s]%*%B + rnorm(n)
 	fit <- mvr(y,x)
 	fit$activeX
 	fit$Bhat
