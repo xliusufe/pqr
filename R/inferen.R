@@ -34,7 +34,7 @@ my.est = function(y,x,z,tau,method,iter.num,pen,eps,sim.level)
   if(pen=="glasso") isPenColumn = TRUE
   else isPenColumn = FALSE
   fit = mvr(x,z,isPenColumn=isPenColumn)
-  H = t(fit$Bhat)
+  H = t(rbind(as.vector(fit$muhat),fit$Bhat))
   
   if(method=='Iterative'){
     itnum=iter.num
