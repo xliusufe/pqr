@@ -53,10 +53,10 @@ my.est = function(y,x,z,tau,method,iter.num,pen,eps,sim.level)
 {
   d = ncol(x)
   result1 = ini.est(cbind(x,1,z),y,index=c(1:(d+1)),tau,level=sim.level)
-  if(pen=="glasso")
-    H = eff.est.glasso(z,x)
-  else
-    H=eff.est(z,x)
+  if(pen=="glasso") isPenColumn = 1
+  else isPenColumn = 0
+  fit = mvr(x,z,isPenColumn=isPenColumn)
+  H = t(fit$Bhat)
   
   if(method=='Iterative'){
     itnum=iter.num

@@ -25,6 +25,8 @@
 	library(SparseM)
 	library(quantreg)
 
+    \# Example 1
+	
     n <- 50
 	d <- 3
 	s <- 3
@@ -42,8 +44,23 @@
     lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
     ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
     counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
- 
- # References
+	
+	\# Example 2
+	
+    n <- 100
+	q <- 5
+	s <- 3
+	p <- 100
+	B <- matrix(runif(q*s, 2,3), s)
+	x <- matrix(rnorm(n*p),n,p)
+	y <- x[,1:s]\%*\%B + rnorm(n)
+	fit <- mvr(y,x)
+	fit$activeX
+	fit$Bhat
+	which(rowSums(fit$Bhat^2)>0)
+	fit$muhat 
+
+# References
  
 Cheng, C., Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects 
 in high-dimensional quantile regression. Manuscript.
