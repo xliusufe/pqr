@@ -11,7 +11,7 @@ mvr <-
     if (penalty == "LASSO") pen <- 1
     if (penalty == "MCP")   pen <- 2 
     if (penalty=="SCAD"){    
-      gamma_pen <- 3
+      gamma_pen <- 3.7
       pen <- 3
     }  
     if (gamma_pen <= 1 & penalty=="MCP") stop("gamma must be greater than 1 for the MC penalty")
