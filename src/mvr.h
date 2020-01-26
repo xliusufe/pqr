@@ -128,7 +128,7 @@ MatrixXd setuplambdaMVR_lasso(MatrixXd Y, MatrixXd Z1, int nlam, VectorXd setlam
 }
 //----------------------------------------------------------------**
 //***----update the jth row of matrix A with penalty--------------**
-VectorXd updateAj(VectorXd z, int n, int r1, double lambda, double alpha, double gamma, int penalty)
+VectorXd updateAj(VectorXd z, double lambda, double alpha, double gamma, int penalty)
 {
 	double znorm = z.norm();
 	znorm = penalties(znorm, 1, lambda, alpha, gamma, penalty) / znorm;
@@ -181,7 +181,7 @@ MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda
 			}
 			for (j = 0; j < p; j++) {
 				gj = r.transpose()*Z.col(j)/n + Anew.col(j);			
-				ajnew = updateAj(gj, n, q, lambda1, alpha, gamma, penalty);
+				ajnew = updateAj(gj, lambda1, alpha, gamma, penalty);
 				diff = ajnew-Anew.col(j);
 				diffnorm = diff.norm();
 				if(diffnorm!=0){
