@@ -38,7 +38,7 @@ struct Options_pen
 
 //----------------------------------------------------------------**
 //***--------------------penalty----------------------------------**
-double penalties(double z, double v, double lambda, double alpha, double gamma, double penalty) {
+double penalties(double z, double v, double lambda, double alpha, double gamma, int penalty) {
 	double beta=0,l1,l2;
 	l1 = lambda*alpha; 
 	l2 = lambda*(1-alpha);
@@ -68,7 +68,7 @@ double penalties(double z, double v, double lambda, double alpha, double gamma, 
 //----------------------------------------------------------------**
 //***-------------setup tuning parameters for MVR-----------------**
 // [[Rcpp::export]]
-VectorXd setuplambdaMVR_glasso(MatrixXd Y, MatrixXd Z, int nlam, VectorXd setlam)
+VectorXd setuplambdaMVR_colwise(MatrixXd Y, MatrixXd Z, int nlam, VectorXd setlam)
 {
 	int n=Y.rows(), p = Z.cols(), q = Y.cols(), j;
 	double lam_max, lam_min, alpha, max_lam, max_tmp=0;
@@ -136,8 +136,7 @@ VectorXd updateAj(VectorXd z, int n, int r1, double lambda, double alpha, double
 }
 //***-------------------------------------------------------------**
 //***-------update the jth row of matrix A with penalty-----------**
-MatrixXd MVR_glasso(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd,
-               int max_iter, double alpha, double gamma, double penalty,int dfmax, double eps)
+MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd)
 {
 /*
 	Input:
@@ -156,6 +155,8 @@ MatrixXd MVR_glasso(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda,
 	int l,j, active, step, nlam = lambda.size();
 	int n = Y.rows(), q = Y.cols(), p = Z1.cols();
 	double lambda1,diffmax=0,diffnorm;
+	int dfmax = opts_pen.dfmax, max_step = opts.max_step, penalty = opts_pen.pen;
+	double alpha = opts_pen.alpha, eps = opts.eps, gamma = opts_pen.gamma_pen;
 
     MatrixXd Anew=MatrixXd::Constant(q, p, 0), Bnew, Z = Z1;
 	MatrixXd betapath = MatrixXd::Constant(p*q, nlam, 0);
@@ -168,7 +169,7 @@ MatrixXd MVR_glasso(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda,
 	for (l = 0; l < nlam; l++) {
 		lambda1 = lambda[l];
 		step = 0;
-		while (step<max_iter) {
+		while (step<max_step) {
 			step++;
 			active = 0;
 			for (j = 0; j < p; j++)
@@ -202,8 +203,7 @@ MatrixXd MVR_glasso(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda,
 }
 //***-------------------------------------------------------------**
 //***-------update the jth row of matrix A with penalty-----------**
-MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd,
-               int max_iter, double alpha, double gamma, double penalty,int dfmax, double eps)
+MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd)
 {
 /*
 	Input:
@@ -221,6 +221,9 @@ MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, V
 */  
 	int l,j, active, step, n = Z.rows(), p = Z.cols(), nlam = lambda.size();
     double ajnew,gj, lambda1,diffmax, diff;
+	int dfmax = opts_pen.dfmax, max_step = opts.max_step, penalty = opts_pen.pen;
+	double alpha = opts_pen.alpha, eps = opts.eps, gamma = opts_pen.gamma_pen;
+	
 	MatrixXd beta = MatrixXd::Constant(p,nlam,0);;
 	VectorXd Anew, ajnorm, r = Y, r1=Y;
 	Anew.setZero(p);
@@ -229,7 +232,7 @@ MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, V
 	for (l = 0; l < nlam; l++) {
 		lambda1 = lambda[l];
 		step=0;
-		while (step<max_iter){
+		while (step<max_step){
 			step++;
 			active = 0;
 			diffmax = 0;

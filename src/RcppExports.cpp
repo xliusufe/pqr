@@ -7,9 +7,9 @@
 using namespace Rcpp;
 using namespace Eigen;
 
-// setuplambdaMVR_glasso
-VectorXd setuplambdaMVR_glasso(MatrixXd Y, MatrixXd Z, int nlam, VectorXd setlam);
-RcppExport SEXP _pqr_setuplambdaMVR_glasso(SEXP YSEXP, SEXP ZSEXP, SEXP nlamSEXP, SEXP setlamSEXP) {
+// setuplambdaMVR_colwise
+VectorXd setuplambdaMVR_colwise(MatrixXd Y, MatrixXd Z, int nlam, VectorXd setlam);
+RcppExport SEXP _pqr_setuplambdaMVR_colwise(SEXP YSEXP, SEXP ZSEXP, SEXP nlamSEXP, SEXP setlamSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -17,7 +17,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< MatrixXd >::type Z(ZSEXP);
     Rcpp::traits::input_parameter< int >::type nlam(nlamSEXP);
     Rcpp::traits::input_parameter< VectorXd >::type setlam(setlamSEXP);
-    rcpp_result_gen = Rcpp::wrap(setuplambdaMVR_glasso(Y, Z, nlam, setlam));
+    rcpp_result_gen = Rcpp::wrap(setuplambdaMVR_colwise(Y, Z, nlam, setlam));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -35,9 +35,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// EstMVR_glasso
-List EstMVR_glasso(MatrixXd Y, MatrixXd Z, VectorXd lambda, List optsList, List optsList_pen);
-RcppExport SEXP _pqr_EstMVR_glasso(SEXP YSEXP, SEXP ZSEXP, SEXP lambdaSEXP, SEXP optsListSEXP, SEXP optsList_penSEXP) {
+// EstMVR_colwise
+List EstMVR_colwise(MatrixXd Y, MatrixXd Z, VectorXd lambda, List optsList, List optsList_pen);
+RcppExport SEXP _pqr_EstMVR_colwise(SEXP YSEXP, SEXP ZSEXP, SEXP lambdaSEXP, SEXP optsListSEXP, SEXP optsList_penSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -46,7 +46,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< VectorXd >::type lambda(lambdaSEXP);
     Rcpp::traits::input_parameter< List >::type optsList(optsListSEXP);
     Rcpp::traits::input_parameter< List >::type optsList_pen(optsList_penSEXP);
-    rcpp_result_gen = Rcpp::wrap(EstMVR_glasso(Y, Z, lambda, optsList, optsList_pen));
+    rcpp_result_gen = Rcpp::wrap(EstMVR_colwise(Y, Z, lambda, optsList, optsList_pen));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -67,9 +67,9 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_pqr_setuplambdaMVR_glasso", (DL_FUNC) &_pqr_setuplambdaMVR_glasso, 4},
+    {"_pqr_setuplambdaMVR_colwise", (DL_FUNC) &_pqr_setuplambdaMVR_colwise, 4},
     {"_pqr_setuplambdaMVR_lasso", (DL_FUNC) &_pqr_setuplambdaMVR_lasso, 4},
-    {"_pqr_EstMVR_glasso", (DL_FUNC) &_pqr_EstMVR_glasso, 5},
+    {"_pqr_EstMVR_colwise", (DL_FUNC) &_pqr_EstMVR_colwise, 5},
     {"_pqr_EstMVR_lasso", (DL_FUNC) &_pqr_EstMVR_lasso, 5},
     {NULL, NULL, 0}
 };

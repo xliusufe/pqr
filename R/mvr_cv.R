@@ -19,7 +19,7 @@ mvr_cv <- function(Y,X,ncv,lambda,opts,opts_pen){
       Xtest = X[cv.id,]
       nt = nrow(Ytest)
       
-      fit = EstMVR_glasso(Ytrain,Xtrain,lambda,opts,opts_pen)
+      fit = EstMVR_colwise(Ytrain,Xtrain,lambda,opts,opts_pen)
       df = colSums(fit$df)
       for(kk in 1:nlam){
         Bnew = matrix(fit$betapath[,kk],p)
@@ -60,7 +60,7 @@ mvr_cv <- function(Y,X,ncv,lambda,opts,opts_pen){
   } # end of CV
   #---------------- The estimation after selection ---------------------#
   if(opts_pen$isPenColumn){
-    fit_opt = EstMVR_glasso(Y,X,lambda_opt,opts,opts_pen)
+    fit_opt = EstMVR_colwise(Y,X,lambda_opt,opts,opts_pen)
     activeX = c(1,fit_opt$df)
     Bhat = matrix(fit_opt$betapath,p)
     bic_opt = fit_opt$likhd

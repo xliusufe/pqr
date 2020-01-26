@@ -25,7 +25,7 @@ mvr <-
         if (nlam < 1) stop("nlambda must be at least 1")
         if (n<=p) lam_min = 1e-2
         setlam = c(1,lam_min,alpha,nlam)
-        lambda = setuplambdaMVR_glasso(Y,X2,nlam,setlam)
+        lambda = setuplambdaMVR_colwise(Y,X2,nlam,setlam)
       }
       else  opts_pen$nlam = length(lambda)
     }

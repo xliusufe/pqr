@@ -6,7 +6,7 @@ mvr_bic <- function(Y,X,method,lambda,opts,opts_pen){
   n = opts$n
   nlam = opts_pen$nlam
   if(opts_pen$isPenColumn){
-    fit = EstMVR_glasso(Y,X,lambda,opts,opts_pen)
+    fit = EstMVR_colwise(Y,X,lambda,opts,opts_pen)
     df = q*colSums(fit$df)
     loglikelih =  n*q * log(fit$likhd/(n*q))
     bic <- switch (method,
