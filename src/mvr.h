@@ -154,7 +154,7 @@ MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda
 */  
 	int l,j, active, step, nlam = lambda.size();
 	int n = Y.rows(), q = Y.cols(), p = Z1.cols();
-	double lambda1,diffmax=0,diffnorm;
+	double lambda1,diffmax,diffnorm;
 	int dfmax = opts_pen.dfmax, max_step = opts.max_step, penalty = opts_pen.pen;
 	double alpha = opts_pen.alpha, eps = opts.eps, gamma = opts_pen.gamma_pen;
 
@@ -172,6 +172,7 @@ MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda
 		while (step<max_step) {
 			step++;
 			active = 0;
+			diffmax=0;
 			for (j = 0; j < p; j++)
 				if (ajnorm[j] != 0) active = active + 1;
 			if (active>dfmax) {
