@@ -23,7 +23,7 @@
 
     library(pqr)
 	
-    # Example 1
+    # Example 1: the usage of "inferen()"
 	
     n <- 50
 	d <- 3
@@ -43,7 +43,7 @@
     ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
     counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
 	
-	#Example 2
+	#Example 2: the usage of function "mvr()"
     
 	n <- 100
 	q <- 5
@@ -58,7 +58,7 @@
 	which(rowSums(fit$Bhat^2)>0)
 	fit$muhat 
 
-    #example 3
+    #example 3: the usage of function "mvr()"
   
 	n <- 200
 	q <- 5
