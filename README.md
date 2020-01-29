@@ -37,15 +37,15 @@
 	y <- x%*%beta + cbind(1,z)%*%eta + rnorm(n)
 	fit <- inferen(y,x,z,tau=0.5)
 	ests <- fit$ests
-  est.coef <- ests$coef
+    est.coef <- ests$coef
 	boot.var <- diag(fit$cov)
-  lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
-  ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
-  counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
+    lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
+    ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
+    counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
 	
-	# Example 2
-	
-  n <- 100
+	#Example 2
+    
+	n <- 100
 	q <- 5
 	s <- 3
 	p <- 100
@@ -58,7 +58,7 @@
 	which(rowSums(fit$Bhat^2)>0)
 	fit$muhat 
 
-  #example 3
+    #example 3
   
 	n <- 200
 	q <- 5
