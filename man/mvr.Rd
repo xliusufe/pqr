@@ -4,22 +4,24 @@
 \docType{package}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
-Provide CI of individual coefficient of high-dimensional quantile regression
+Estimate coefficients of high-dimensional multivariate regression for the column-wise
 }
 \description{
 This function provides the coefficient matrix estimator of high-dimensional multivariate regression (MVR) with penalty \code{lasso} (\code{mcp} or \code{scad}). The tuning parameter is selected by \code{BIC} (the default), \code{AIC}, \code{EBIC}, \code{CV}, or \code{GCV}.
 }
 \usage{
-mvr(y, x, method="BIC", ncv=10, penalty="LASSO", isPenColumn=TRUE, 
+mvr(Y, X, Z=NULL, method="BIC", ncv=10, penalty="LASSO", isPenColumn=TRUE, 
           lambda=NULL, nlam=50, intercept=TRUE, lam_min=1e-4, eps=1e-6, 
           maxstep=20, gamma_pen=2, dfmax=NULL, alpha=1)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{y}{The response, a vector of size \eqn{n} or  a matrix of size \eqn{n\times q}}
+  \item{Y}{The response, a vector of size \eqn{n} or  a matrix of size \eqn{n\times q}}
   
-  \item{x}{The treatment effects, a matrix with dimension \eqn{n\times p} }
+  \item{X}{The covariates to be penalized, a matrix with dimension \eqn{n\times p} }
 
+  \item{Z}{The covariates without penalization, a matrix with dimension \eqn{n\times d}. The default is \code{NULL}. }
+  
   \item{method}{The method to be applied to select parameters.  Either \code{BIC}
                 (the default), \code{AIC}, \code{EBIC}, \code{CV}, or \code{GCV}.}
     
@@ -84,7 +86,9 @@ mvr(y, x, method="BIC", ncv=10, penalty="LASSO", isPenColumn=TRUE,
                     
    \item{bic}{BIC value used to select variables.}  
    
-   \item{muhat}{Estimator of intercept \eqn{\mu}.}
+   \item{muhat}{Estimator of intercept \eqn{\mu}. It is \code{NULL} if \code{intercept} is \code{FALSE}.}
+   
+   \item{Chat}{Estimator of coefficients of \eqn{Z}. \code{Chat} is \code{NULL} if \code{Z} is \code{NULL}.}
                     
    \item{Y}{Response \eqn{Y}.}
   
@@ -101,19 +105,38 @@ Chao Cheng, Xingdong Feng, Jian Huang and Xu Liu (liu.xu@sufe.edu.cn)
 
 \examples{
 	library(pqr)
-
-	n <- 100
+	
+	#example 1
+	n <- 200
 	q <- 5
 	s <- 3
 	p <- 100
 	B <- matrix(runif(q*s, 2,3), s)
-	x <- matrix(rnorm(n*p),n,p)
-	y <- x[,1:s]\%*\%B + rnorm(n)
-	fit <- mvr(y,x)
+	X <- matrix(rnorm(n*p),n,p)
+	Y <- X[,1:s]\%*\%B + rnorm(n)
+	fit <- mvr(Y,X)
 	fit$activeX
 	fit$Bhat
 	which(rowSums(fit$Bhat^2)>0)
 	fit$muhat
+	
+	#example 2
+	n <- 200
+	q <- 5
+	s <- 3
+	d <- 3
+	p <- 100
+	B <- matrix(runif(q*s, 2,3), s)
+	C <- matrix(runif(q*d, 1,2), d)
+	X <- matrix(rnorm(n*p),n,p)
+	Z <- matrix(rnorm(n*d),n)
+	Y <- X[,1:s]\%*\%B + Z\%*\%C + rnorm(n)
+	fit <- mvr(Y,X,Z)
+	fit$activeX
+	fit$Bhat
+	which(rowSums(fit$Bhat^2)>0)
+	fit$Chat
+	fit$muhat	
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

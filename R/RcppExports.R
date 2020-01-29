@@ -9,11 +9,11 @@ setuplambdaMVR_lasso <- function(Y, Z1, nlam, setlam) {
     .Call(`_pqr_setuplambdaMVR_lasso`, Y, Z1, nlam, setlam)
 }
 
-EstMVR_colwise <- function(Y, Z, lambda, optsList, optsList_pen) {
-    .Call(`_pqr_EstMVR_colwise`, Y, Z, lambda, optsList, optsList_pen)
+EstMVR_colwise <- function(Y, Z, W, lambda, optsList, optsList_pen) {
+    .Call(`_pqr_EstMVR_colwise`, Y, Z, W, lambda, optsList, optsList_pen)
 }
 
-EstMVR_lasso <- function(Y, Z1, lambda, optsList, optsList_pen) {
-    .Call(`_pqr_EstMVR_lasso`, Y, Z1, lambda, optsList, optsList_pen)
+EstMVR_lasso <- function(Y, Z1, W, lambda, optsList, optsList_pen) {
+    .Call(`_pqr_EstMVR_lasso`, Y, Z1, W, lambda, optsList, optsList_pen)
 }
 

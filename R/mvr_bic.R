@@ -1,13 +1,14 @@
 
 ##--------------Estimation with Penalty by BIC----------------------##
-mvr_bic <- function(Y,X,method,lambda,opts,opts_pen){    
+mvr_bic <- function(Y,X,Z,method,lambda,opts,opts_pen){    
   p = opts$p
   q = opts$q
   n = opts$n
+  pz = opts$pz
   nlam = opts_pen$nlam
   if(opts_pen$isPenColumn){
-    fit = EstMVR_colwise(Y,X,lambda,opts,opts_pen)
-    df = q*colSums(fit$df)
+    fit = EstMVR_colwise(Y,X,Z,lambda,opts,opts_pen)
+    df = q*(colSums(fit$df)+pz)
     loglikelih =  n*q * log(fit$likhd/(n*q))
     bic <- switch (method,
                    BIC = loglikelih + log(n*q)*df,
@@ -21,6 +22,8 @@ mvr_bic <- function(Y,X,method,lambda,opts,opts_pen){
     likhd_opt = fit$likhd[selected]
     df_opt = fit$df[,selected]
     Bhat = matrix(fit$betapath[,selected],p)
+    if(pz) Chat = matrix(fit$Cpath[,selected],pz)
+    else Chat = NULL
     df_opt = c(1, df_opt)
   }
   else{
@@ -31,10 +34,12 @@ mvr_bic <- function(Y,X,method,lambda,opts,opts_pen){
     mu_opt = rep(0,q)
     bic = matrix(0,q,nlam)
     Bhat = matrix(0,p,q)
-    fit = EstMVR_lasso(Y,X,lambda,opts,opts_pen)
+    if(pz) Chat = matrix(0,pz,q)
+    else Chat = NULL
+    fit = EstMVR_lasso(Y,X,Z,lambda,opts,opts_pen)
     for(j in 1:q){
       df0 = fit$df[((j-1)*p+1):(j*p),]
-      df = colSums(df0)
+      df = colSums(df0) + pz
       likhd = fit$likhd[j,]
       loglikelih =  n*log(likhd/n)
       bic0 <- switch (method,
@@ -50,6 +55,7 @@ mvr_bic <- function(Y,X,method,lambda,opts,opts_pen){
       likhd_opt[j] = likhd[selected1]
       df_opt[j,] = df0[,selected1]
       Bhat[,j] = fit$betapath[((j-1)*p+1):(j*p),selected1]
+      if(pz) Chat[,j] = fit$Cpath[((j-1)*pz+1):(j*pz),selected1]
       selected[j] = selected1
     }
     df_opt = cbind(1, df_opt)
@@ -58,6 +64,7 @@ mvr_bic <- function(Y,X,method,lambda,opts,opts_pen){
               activeX = df_opt,
               lambda = lambda,
               Bhat = Bhat,
+              Chat = Chat,
               selectedID = selected,
               lambda_opt=lambda_opt,
               bic = bic,

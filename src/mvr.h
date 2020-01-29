@@ -20,6 +20,7 @@ struct Options
 	int p;
 	int q;
 	int n;
+	int pz;
 	double eps;
 	int max_step;
 }opts;
@@ -136,7 +137,7 @@ VectorXd updateAj(VectorXd z, double lambda, double alpha, double gamma, int pen
 }
 //***-------------------------------------------------------------**
 //***-------update the jth row of matrix A with penalty-----------**
-MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd)
+List MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXd W, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd)
 {
 /*
 	Input:
@@ -152,16 +153,22 @@ MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda
 	Output:
 	Anew is q*p coefficient metrix
 */  
-	int l,j, active, step, nlam = lambda.size();
-	int n = Y.rows(), q = Y.cols(), p = Z1.cols();
-	double lambda1,diffmax,diffnorm;
-	int dfmax = opts_pen.dfmax, max_step = opts.max_step, penalty = opts_pen.pen;
-	double alpha = opts_pen.alpha, eps = opts.eps, gamma = opts_pen.gamma_pen;
+	int l,j, active, step, nlam = lambda.size(), n = Y.rows(), q = Y.cols(), p = Z1.cols();
+	int dfmax = opts_pen.dfmax, max_step = opts.max_step, gamma = opts_pen.gamma_pen, penalty = opts_pen.pen, pz=opts.pz;
+	double alpha = opts_pen.alpha, eps = opts.eps;
+	double lambda1,diffmax=0,diffnorm;
 
     MatrixXd Anew=MatrixXd::Constant(q, p, 0), Bnew, Z = Z1;
-	MatrixXd betapath = MatrixXd::Constant(p*q, nlam, 0);
+	MatrixXd betapath = MatrixXd::Constant(p*q, nlam, 0), Cbeta, Cnew0, Cnew;
 	VectorXd ajnew,gj, ajnorm, znorm, diff;
-	
+	if(pz){
+		Cbeta.setZero(pz*q,nlam);
+		Cnew0.setZero(pz,q);
+	}	
+	else{
+		Cnew0.setZero(1,q);
+		Cbeta.setZero(q,nlam);
+	}
 	MatrixXd r = Y;
 	ajnorm.setZero(p);
 	znorm = Z1.colwise().norm()/sqrt(n);
@@ -172,13 +179,16 @@ MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda
 		while (step<max_step) {
 			step++;
 			active = 0;
-			diffmax=0;
 			for (j = 0; j < p; j++)
-				if (ajnorm[j] != 0) active = active + 1;
-			if (active>dfmax) {
-				Anew = MatrixXd::Constant(q, p, -9);
-				return Anew.transpose();
-			}
+				if (ajnorm[j] != 0) active++;
+			if (active>dfmax)
+				return List::create(Named("betapath") = NULL,Named("Cbeta") = NULL);
+			if(pz){
+				Cnew = W.transpose()*r/n;
+				r -= W*Cnew; 
+				Cnew += Cnew0;
+				Cnew0 = Cnew;
+			}		
 			for (j = 0; j < p; j++) {
 				gj = r.transpose()*Z.col(j)/n + Anew.col(j);			
 				ajnew = updateAj(gj, lambda1, alpha, gamma, penalty);
@@ -190,21 +200,26 @@ MatrixXd MVR_colwise(MatrixXd Y, MatrixXd Z1, MatrixXi &activeA, VectorXd lambda
 					ajnorm[j] = ajnew.norm();
 					if(diffnorm>diffmax) diffmax = diffnorm;
 				}
-			}
+			}			
 			if(diffmax<eps) break;
 		}//end while
 		for (j = 0; j<p; j++) 	if (ajnorm[j]) activeA(j,l) = 1;
-		likhd[l] = (Y - Z * Anew.transpose()).squaredNorm();
+		if(pz){	
+			likhd[l] = (Y - W*Cnew- Z * Anew.transpose()).squaredNorm();
+			Cnew.resize(pz*q,1);
+			Cbeta.col(l) = Cnew;			
+		}	
+		else  likhd[l] = (Y - Z * Anew.transpose()).squaredNorm();					
 		Bnew = Anew.transpose();
 		for(j=0; j<p; j++) Bnew.row(j) /= znorm[j];
 		Bnew.resize(p*q,1);
 		betapath.col(l) = Bnew;
 	}//end for	
-	return betapath;
+	return List::create(Named("betapath") = betapath, Named("Cbeta") = Cbeta);
 }
-//***-------------------------------------------------------------**
-//***-------update the jth row of matrix A with penalty-----------**
-MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd)
+//***-------------------------------------------------------------** 
+//***-------update the jth row of matrix A with penalty-----------** 
+List MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXd W, MatrixXi &activeA, VectorXd lambda, VectorXd &likhd)
 {
 /*
 	Input:
@@ -220,16 +235,19 @@ MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, V
 	Output:
 	Anew is p-dimensional coefficient
 */  
-	int l,j, active, step, n = Z.rows(), p = Z.cols(), nlam = lambda.size();
+	int l,j, active, step, n = opts.n, p = opts.p, nlam = lambda.size();
     double ajnew,gj, lambda1,diffmax, diff;
-	int dfmax = opts_pen.dfmax, max_step = opts.max_step, penalty = opts_pen.pen;
-	double alpha = opts_pen.alpha, eps = opts.eps, gamma = opts_pen.gamma_pen;
+	int dfmax = opts_pen.dfmax, max_step = opts.max_step, gamma = opts_pen.gamma_pen, penalty = opts_pen.pen, pz=opts.pz;
+	double alpha = opts_pen.alpha, eps = opts.eps;
 	
-	MatrixXd beta = MatrixXd::Constant(p,nlam,0);;
-	VectorXd Anew, ajnorm, r = Y, r1=Y;
+	MatrixXd beta = MatrixXd::Constant(p,nlam,0), Cbeta;
+	VectorXd Anew, ajnorm, r = Y, Cnew0, Cnew;
 	Anew.setZero(p);
 	ajnorm = Anew;
-	
+	if(pz){
+		Cbeta.setZero(pz,nlam);
+		Cnew0.setZero(pz);
+	}
 	for (l = 0; l < nlam; l++) {
 		lambda1 = lambda[l];
 		step=0;
@@ -238,8 +256,15 @@ MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, V
 			active = 0;
 			diffmax = 0;
 			for (j = 0; j < p; j++)
-				if (ajnorm[j] != 0) active = active + 1;
-			if (active>dfmax)	return VectorXd::Constant(p, -9);			
+				if (ajnorm[j] != 0) active++;	
+			if (active>dfmax)
+				return List::create(Named("beta") = NULL,Named("Cbeta") = NULL);					
+			if(pz){
+				Cnew = W.transpose()*r/n;
+				r -= W*Cnew;
+				Cnew += Cnew0;	
+				Cnew0 = Cnew;				
+			}				
 			for (j = 0; j < p; j++) {
 				gj = r.dot(Z.col(j))/n + Anew[j];
 				ajnew = penalties(gj, 1, lambda1, alpha, gamma, penalty);
@@ -254,9 +279,14 @@ MatrixXd MVR_lasso(VectorXd Y, MatrixXd Z, MatrixXi &activeA, VectorXd lambda, V
 			}						
 			if(diffmax<eps) break;
 		}//end while
-		likhd[l] = (Y - Z * Anew).squaredNorm();
+		if(pz){
+			likhd[l] = (Y - W*Cnew- Z * Anew).squaredNorm();
+			Cbeta.col(l) = Cnew;
+		}
+		else  likhd[l] = (Y - Z * Anew).squaredNorm();
 		for (j = 0; j<p; j++) if (ajnorm[j]) activeA(j,l) = 1;
-		beta.col(l) = Anew;
+		beta.col(l) = Anew;			
 	}//end for	
-	return beta;
-}	
+	return List::create(Named("beta") = beta,Named("Cbeta") = Cbeta);
+}
+	

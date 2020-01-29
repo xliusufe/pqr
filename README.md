@@ -37,15 +37,15 @@
 	y <- x%*%beta + cbind(1,z)%*%eta + rnorm(n)
 	fit <- inferen(y,x,z,tau=0.5)
 	ests <- fit$ests
-    est.coef <- ests$coef
+  est.coef <- ests$coef
 	boot.var <- diag(fit$cov)
-    lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
-    ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
-    counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
+  lbounds <- ests$coef - qnorm((1+alpha)/2)*sqrt(boot.var)
+  ubounds <- ests$coef + qnorm((1+alpha)/2)*sqrt(boot.var)
+  counts <- ifelse(lbounds<beta&beta<ubounds,1,0)
 	
 	# Example 2
 	
-    n <- 100
+  n <- 100
 	q <- 5
 	s <- 3
 	p <- 100
@@ -58,6 +58,25 @@
 	which(rowSums(fit$Bhat^2)>0)
 	fit$muhat 
 
+  #example 3
+  
+	n <- 200
+	q <- 5
+	s <- 3
+	d <- 3
+	p <- 100
+	B <- matrix(runif(q*s, 2,3), s)
+	C <- matrix(runif(q*d, 1,2), d)
+	x <- matrix(rnorm(n*p),n,p)
+	z <- matrix(rnorm(n*d),n)
+	y <- X[,1:s]%*%B+Z%*%C + rnorm(n)
+	fit <- mvr(y,x,z)
+	fit$activeX
+	fit$Bhat
+	which(rowSums(fit$Bhat^2)>0)
+	fit$Chat
+	fit$muhat	
+	
 # References
  
 Cheng, C., Feng, X., Huang, J. and Liu, X. (2020). Regularized projection score estimation of treatment effects 

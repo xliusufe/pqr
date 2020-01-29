@@ -1,9 +1,10 @@
 
 ##--------------Estimation with Penalty by CV----------------------##
-mvr_cv <- function(Y,X,ncv,lambda,opts,opts_pen){
+mvr_cv <- function(Y,X,Z,ncv,lambda,opts,opts_pen){
   p <- opts$p
   q <- opts$q
   n <- opts$n
+  pz = opts$pz
   nlam <- opts_pen$nlam
   len_cv = ceiling(n/ncv)
   likhd = rep(0,nlam)
@@ -17,18 +18,29 @@ mvr_cv <- function(Y,X,ncv,lambda,opts,opts_pen){
       Xtrain = X[-cv.id,]
       Ytest = Y[cv.id,]
       Xtest = X[cv.id,]
+      Ztrain = Z[-cv.id,]
+      Ztest = Z[cv.id,]
       nt = nrow(Ytest)
       
-      fit = EstMVR_colwise(Ytrain,Xtrain,lambda,opts,opts_pen)
+      fit = EstMVR_colwise(Ytrain,Xtrain,Ztrain,lambda,opts,opts_pen)
       df = colSums(fit$df)
-      for(kk in 1:nlam){
-        Bnew = matrix(fit$betapath[,kk],p)
-        likhd[kk] = sum((Ytest-Xtest%*%Bnew)^2)
+      if(pz){
+        for(kk in 1:nlam){
+          Bnew = matrix(fit$betapath[,kk],p)
+          Cnew = matrix(fit$Cpath[,kk],pz)
+          likhd[kk] = sum((Ytest-Ztest%*%Cnew-Xtest%*%Bnew)^2)
+        }
+      }
+      else{
+        for(kk in 1:nlam){
+          Bnew = matrix(fit$betapath[,kk],p)
+          likhd[kk] = sum((Ytest-Xtest%*%Bnew)^2)
+        }
       }
       bic = bic + likhd
     }
     selected = which.min(bic)
-    lambda_opt = lambda[selected]
+    lambda_opt = lambda[1:selected]
   }
   else{
     lambda_opt = rep(0,q)
@@ -41,13 +53,24 @@ mvr_cv <- function(Y,X,ncv,lambda,opts,opts_pen){
       Xtrain = X[-cv.id,]
       Ytest = Y[cv.id,]
       Xtest = X[cv.id,]
+      Ztrain = Z[-cv.id,]
+      Ztest = Z[cv.id,]
       nt = nrow(Ytest)
       
-      fit = EstMVR_lasso(Ytrain,Xtrain,lambda,opts,opts_pen)
+      fit = EstMVR_lasso(Ytrain,Xtrain,Ztrain,lambda,opts,opts_pen)
       for(j in 1:q){
-        for(kk in 1:nlam){
-          Bnew = fit$betapath[((j-1)*p+1):(j*p),kk]
-          likhd[kk] = sum((Ytest[,j]-Xtest%*%Bnew)^2)
+        if(pz){
+          for(kk in 1:nlam){
+            Bnew = fit$betapath[((j-1)*p+1):(j*p),kk]
+            Cnew = fit$Cpath[((j-1)*pz+1):(j*pz),kk]
+            likhd[kk] = sum((Ytest[,j]-Ztest%*%Cnew-Xtest%*%Bnew)^2)
+          }
+        }
+        else{
+          for(kk in 1:nlam){
+            Bnew = fit$betapath[((j-1)*p+1):(j*p),kk]
+            likhd[kk] = sum((Ytest[,j]-Xtest%*%Bnew)^2)
+          }
         }
         bic[j,] = bic[j,] + likhd
       }
@@ -60,24 +83,34 @@ mvr_cv <- function(Y,X,ncv,lambda,opts,opts_pen){
   } # end of CV
   #---------------- The estimation after selection ---------------------#
   if(opts_pen$isPenColumn){
-    fit_opt = EstMVR_colwise(Y,X,lambda_opt,opts,opts_pen)
-    activeX = c(1,fit_opt$df)
-    Bhat = matrix(fit_opt$betapath,p)
-    bic_opt = fit_opt$likhd
+    opts_pen$nlam = length(lambda_opt)
+    fit_opt = EstMVR_colwise(Y,X,Z,lambda_opt,opts,opts_pen)
+    activeX = c(1,fit_opt$df[,selected])
+    Bhat = matrix(fit_opt$betapath[,selected],p)
+    if(pz) Chat = matrix(fit_opt$Cpath[,selected],pz)
+    else Chat = NULL
+    bic_opt = fit_opt$likhd[selected]
   }
   else{
-    fit_opt = EstMVR_lasso(Y,X,matrix(lambda_opt,1,q),opts,opts_pen)
-    activeX = rbind(1,matrix(fit_opt$df,p))
-    Bhat = matrix(fit_opt$betapath,p)
-    bic_opt = fit_opt$likhd
+    nlam1 = 10
+    lambda1 = matrix(0,nlam1,q)
+    for(j in 1:q)   lambda1[,j] = exp(seq(log(lambda[1,j]),log(lambda_opt[j]),len=nlam1))
+    opts_pen$nlam = nrow(lambda1)
+    fit_opt = EstMVR_lasso(Y,X,Z,lambda1,opts,opts_pen)
+    activeX = rbind(1,matrix(fit_opt$df[,nlam1],p))
+    Bhat = matrix(fit_opt$betapath[,nlam1],p)
+    if(pz) Chat = matrix(fit_opt$Cpath[,nlam1],pz)
+    else Chat = NULL
+    bic_opt = fit_opt$likhd[,nlam1]
   }
   return(list(rss=fit_opt$likhd,
               activeX = t(activeX),
               lambda = lambda,
               selectedID = selected,
-              RSS = bic_opt,
+              bic = bic_opt,
               lambda_opt=lambda_opt,
               Bhat = Bhat,
+              Chat = Chat,
               Y = Y,
               X = X
   )
