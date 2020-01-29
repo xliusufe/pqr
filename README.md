@@ -69,7 +69,7 @@
 	C <- matrix(runif(q*d, 1,2), d)
 	x <- matrix(rnorm(n*p),n,p)
 	z <- matrix(rnorm(n*d),n)
-	y <- X[,1:s]%*%B+Z%*%C + rnorm(n)
+	y <- x[,1:s]%*%B + z%*%C + rnorm(n)
 	fit <- mvr(y,x,z)
 	fit$activeX
 	fit$Bhat
