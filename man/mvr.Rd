@@ -113,7 +113,7 @@ Chao Cheng, Xingdong Feng, Jian Huang and Xu Liu (liu.xu@sufe.edu.cn)
 	p <- 100
 	B <- matrix(runif(q*s, 2,3), s)
 	X <- matrix(rnorm(n*p),n,p)
-	Y <- X[,1:s]\%*\%B + rnorm(n)
+	Y <- X[,1:s]\%*\%B + matrix(rnorm(n*q),n)
 	fit <- mvr(Y,X)
 	fit$activeX
 	fit$Bhat
@@ -130,7 +130,7 @@ Chao Cheng, Xingdong Feng, Jian Huang and Xu Liu (liu.xu@sufe.edu.cn)
 	C <- matrix(runif(q*d, 1,2), d)
 	X <- matrix(rnorm(n*p),n,p)
 	Z <- matrix(rnorm(n*d),n)
-	Y <- X[,1:s]\%*\%B + Z\%*\%C + rnorm(n)
+	Y <- X[,1:s]\%*\%B + Z\%*\%C + matrix(rnorm(n*q),n)
 	fit <- mvr(Y,X,Z)
 	fit$activeX
 	fit$Bhat

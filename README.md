@@ -51,7 +51,7 @@
 	p <- 100
 	B <- matrix(runif(q*s, 2,3), s)
 	x <- matrix(rnorm(n*p),n,p)
-	y <- x[,1:s]%*%B + rnorm(n)
+	y <- x[,1:s]%*%B + matrix(rnorm(n*q),n)
 	fit <- mvr(y,x)
 	fit$activeX
 	fit$Bhat
@@ -69,7 +69,7 @@
 	C <- matrix(runif(q*d, 1,2), d)
 	x <- matrix(rnorm(n*p),n,p)
 	z <- matrix(rnorm(n*d),n)
-	y <- x[,1:s]%*%B + z%*%C + rnorm(n)
+	y <- x[,1:s]%*%B + z%*%C + matrix(rnorm(n*q),n)
 	fit <- mvr(y,x,z)
 	fit$activeX
 	fit$Bhat
