@@ -40,7 +40,7 @@ mvr_cv <- function(Y,X,Z,ncv,lambda,opts,opts_pen){
       bic = bic + likhd
     }
     selected = which.min(bic)
-    lambda_opt = lambda[1:selected]
+    lambda_opt = lambda[selected]
   }
   else{
     lambda_opt = rep(0,q)
@@ -83,31 +83,33 @@ mvr_cv <- function(Y,X,Z,ncv,lambda,opts,opts_pen){
   } # end of CV
   #---------------- The estimation after selection ---------------------#
   if(opts_pen$isPenColumn){
-    opts_pen$nlam = length(lambda_opt)
-    fit_opt = EstMVR_colwise(Y,X,Z,lambda_opt,opts,opts_pen)
-    activeX = c(1,fit_opt$df[,selected])
+    fit_opt = EstMVR_colwise(Y,X,Z,lambda,opts,opts_pen)
+    activeX = fit_opt$df[,selected]
     Bhat = matrix(fit_opt$betapath[,selected],p)
     if(pz) Chat = matrix(fit_opt$Cpath[,selected],pz)
     else Chat = NULL
-    bic_opt = fit_opt$likhd[selected]
+    likhd_opt = fit_opt$likhd[selected]
   }
   else{
-    nlam1 = 10
-    lambda1 = matrix(0,nlam1,q)
-    for(j in 1:q)   lambda1[,j] = exp(seq(log(lambda[1,j]),log(lambda_opt[j]),len=nlam1))
-    opts_pen$nlam = nrow(lambda1)
-    fit_opt = EstMVR_lasso(Y,X,Z,lambda1,opts,opts_pen)
-    activeX = rbind(1,matrix(fit_opt$df[,nlam1],p))
-    Bhat = matrix(fit_opt$betapath[,nlam1],p)
-    if(pz) Chat = matrix(fit_opt$Cpath[,nlam1],pz)
+    activeX = matrix(0,q,p)
+    Bhat = matrix(0,p,q)
+    likhd_opt = rep(0,q)
+    if(pz) Chat = matrix(0,pz,q)
     else Chat = NULL
-    bic_opt = fit_opt$likhd[,nlam1]
+    
+    fit_opt = EstMVR_lasso(Y,X,Z,lambda,opts,opts_pen)
+    for(j in 1:q){
+      activeX[j,] = fit_opt$df[((j-1)*p+1):(j*p),selected[j]]
+      Bhat[,j] = fit$betapath[((j-1)*p+1):(j*p),selected[j]]
+      if(pz) Chat[,j] = fit$Cpath[((j-1)*pz+1):(j*pz),selected[j]]
+      likhd_opt[j] = fit_opt$likhd[j,selected[j]]
+    }
   }
-  return(list(rss=fit_opt$likhd,
-              activeX = t(activeX),
+  return(list(rss = likhd_opt,
+              activeX = activeX,
               lambda = lambda,
               selectedID = selected,
-              bic = bic_opt,
+              bic = bic,
               lambda_opt=lambda_opt,
               Bhat = Bhat,
               Chat = Chat,
