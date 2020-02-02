@@ -44,11 +44,11 @@ my.est = function(y,x,z,tau,method,iter.num,pen,eps,sim.level)
 {
   d = ncol(x)
   result1 = ini.est(cbind(x,1,z),y,index=c(1:(d+1)),tau,level=sim.level)
-  if(pen=="glasso") isPenColumn = TRUE
-  else isPenColumn = FALSE
-  fit = mvr(x,z,method="CV",isPenColumn=isPenColumn)
-  H = t(rbind(as.vector(fit$muhat),fit$Bhat))
-
+  if(pen=="glasso"){
+    fit = mvr(x,z,method="CV")
+    H = t(rbind(as.vector(fit$muhat),fit$Bhat))
+  }
+  else H=eff.est(z,x)
   
   if(method=='Iterative'){
     itnum=iter.num
