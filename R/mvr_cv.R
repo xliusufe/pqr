@@ -6,7 +6,7 @@ mvr_cv <- function(Y,X,Z,ncv,lambda,opts,opts_pen){
   n <- opts$n
   pz = opts$pz
   nlam <- opts_pen$nlam
-  len_cv = ceiling(n/ncv)
+  len_cv = floor(n/ncv)
   likhd = rep(0,nlam)
   
   if(opts_pen$isPenColumn){

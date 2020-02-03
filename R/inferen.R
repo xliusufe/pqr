@@ -45,7 +45,7 @@ my.est = function(y,x,z,tau,method,iter.num,pen,eps,sim.level)
   d = ncol(x)
   result1 = ini.est(cbind(x,1,z),y,index=c(1:(d+1)),tau,level=sim.level)
   if(pen=="glasso"){
-    fit = mvr(x,z,method="CV")
+    fit = mvr(x,z)
     H = t(rbind(as.vector(fit$muhat),fit$Bhat))
   }
   else H=eff.est(z,x)
